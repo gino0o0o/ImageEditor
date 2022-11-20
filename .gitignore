@@ -1,0 +1,11 @@
+composer.lock
+vendor
+node_modules
+.phpunit.result.cache
+docker/certs/**
+docker
+docker-compose.yml
+.env
+.vscode
+public
+.devcontainer

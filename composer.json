@@ -1,0 +1,32 @@
+{
+    "name": "gino0o0o/image-editor",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Gino0o0o\\ImageEditor\\": "src/"
+        }
+    },
+	"autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Luigi",
+            "email": "luigivangi@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+	"config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+        }
+    },
+	"minimum-stability": "dev",
+    "prefer-stable": true
+}
