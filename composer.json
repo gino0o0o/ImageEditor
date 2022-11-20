@@ -1,6 +1,8 @@
 {
     "name": "gino0o0o/image-editor",
+	"description": "A little library to create Thumbnails",
     "type": "library",
+	"license": "proprietary",
     "autoload": {
         "psr-4": {
             "Gino0o0o\\ImageEditor\\": "src/"
@@ -17,6 +19,9 @@
             "email": "luigivangi@gmail.com"
         }
     ],
+	"require": {
+		"php": ">=7.4"
+	},
     "require-dev": {
         "phpunit/phpunit": "^9.5"
     },
