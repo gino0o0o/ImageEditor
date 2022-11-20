@@ -1,5 +1,5 @@
 # Image Editor
 
-La libreria consente di ridimensionare le immagini in PHP attraverso un'interfaccia semplice.
+A simple library for thumbnail generation in PHP.
 
-Richiede l'installazione sul server delle estensioni GD o Imagick
+For the correct usage need the PHP GD extension enabled.
