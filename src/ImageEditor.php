@@ -2,13 +2,10 @@
 
 namespace Gino0o0o\ImageEditor;
 
-use Exception;
-
 class ImageEditor implements BaseImageEditor
 {
 	private string $path = '';
 
-	private ?\GdImage $src = null;
 	private ?\GdImage $thumb = null;
 
 	private const IMAGE_HANDLERS = [
@@ -44,11 +41,10 @@ class ImageEditor implements BaseImageEditor
 		}
 
 		// load the image with the correct loader
-		$this->src = call_user_func(self::IMAGE_HANDLERS[$this->type]['load'], $this->path);
-		$this->thumb = $this->src;
+		$this->thumb = call_user_func(self::IMAGE_HANDLERS[$this->type]['load'], $this->path);
 
 		// no image found at supplied location -> exit
-		if (!$this->src) {
+		if (!$this->thumb) {
 			throw new ImageEditorException("ImageEditor non è riuscito a caricare il file $this->path");
 		}
 	}
@@ -101,39 +97,39 @@ class ImageEditor implements BaseImageEditor
 		// - draw the final thumbnail
 
 		// get original image width and height
-		$src_width = imagesx($this->src);
-		$src_height = imagesy($this->src);
+		$src_width = imagesx($this->thumb);
+		$src_height = imagesy($this->thumb);
 
 		$dimensions = $this->get_dimensions($src_width, $src_height, $thumb_width, $thumb_height);
 
 		if (!$dimensions) {
-			$this->thumb = $this->src;
+			$this->thumb = $this->thumb;
 			return $this;
 		}
 
 		// create duplicate image based on calculated target size
-		$this->thumb = imagecreatetruecolor($thumb_width, $thumb_height);
+		$thumbnail = imagecreatetruecolor($thumb_width, $thumb_height);
 
 		// set transparency options for GIFs and PNGs
 		if (IMAGETYPE_GIF === $this->type || IMAGETYPE_PNG === $this->type) {
 
 			// make image transparent
 			imagecolortransparent(
-				$this->thumb,
-				imagecolorallocate($this->thumb, 0, 0, 0)
+				$thumbnail,
+				imagecolorallocate($thumbnail, 0, 0, 0)
 			);
 
 			// additional settings for PNGs
 			if ($this->type == IMAGETYPE_PNG) {
-				imagealphablending($this->thumb, false);
-				imagesavealpha($this->thumb, true);
+				imagealphablending($thumbnail, false);
+				imagesavealpha($thumbnail, true);
 			}
 		}
 
 		// copy entire source image to duplicate image and resize
 		imagecopyresampled(
+			$thumbnail,
 			$this->thumb,
-			$this->src,
 			$dimensions[0],
 			$dimensions[1],
 			$dimensions[2],
@@ -143,6 +139,8 @@ class ImageEditor implements BaseImageEditor
 			$dimensions[6],
 			$dimensions[7]
 		);
+
+		$this->thumb = $thumbnail;
 
 		return $this;
 	}
