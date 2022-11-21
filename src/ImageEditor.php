@@ -32,6 +32,18 @@ class ImageEditor implements BaseImageEditor
 			throw new ImageEditorException("ImageEditor ha bisogno della librearia GD installata e configurata.");
 		}
 
+		$this->load($path);
+	}
+
+	/**
+	 * Load the image from the give path
+	 *
+	 * @param   string  $path  The complete path to the image
+	 *
+	 * @return  self           The ImageEditor instance
+	 */
+	public function load(string $path) : self
+	{
 		$this->path = $path;
 		$this->type = exif_imagetype($this->path);
 
@@ -47,6 +59,8 @@ class ImageEditor implements BaseImageEditor
 		if (!$this->thumb) {
 			throw new ImageEditorException("ImageEditor non è riuscito a caricare il file $this->path");
 		}
+
+		return $this;
 	}
 
 	/**
@@ -89,12 +103,10 @@ class ImageEditor implements BaseImageEditor
 	 */
 	public function resize(int $thumb_width, int $thumb_height = null) : self
 	{
-		// 2. Create a thumbnail and resize the loaded $image
-		// - get the image dimensions
-		// - define the output size appropriately
-		// - create a thumbnail based on that size
-		// - set alpha transparency for GIFs and PNGs
-		// - draw the final thumbnail
+
+		if (!$this->thumb) {
+			throw new ImageEditorException("ImageEditor. Impossibile trovare il file.");
+		}
 
 		// get original image width and height
 		$src_width = imagesx($this->thumb);
@@ -103,7 +115,6 @@ class ImageEditor implements BaseImageEditor
 		$dimensions = $this->get_dimensions($src_width, $src_height, $thumb_width, $thumb_height);
 
 		if (!$dimensions) {
-			$this->thumb = $this->thumb;
 			return $this;
 		}
 
